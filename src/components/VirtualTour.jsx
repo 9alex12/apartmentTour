@@ -4,7 +4,7 @@ import { VirtualTourPlugin } from '@photo-sphere-viewer/virtual-tour-plugin';
 import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/virtual-tour-plugin/index.css';
 
-const VirtualTour = forwardRef(function VirtualTour({ nodes, startNodeId, ...viewerOptions }, ref) {
+const VirtualTour = forwardRef(function VirtualTour(_, ref) {
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
 
@@ -17,62 +17,100 @@ const VirtualTour = forwardRef(function VirtualTour({ nodes, startNodeId, ...vie
   }));
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container || viewerRef.current) return;
+    if (viewerRef.current) return;
 
     const defaultNodes = [
       {
         id: 'salaCocina',
         panorama: 'photos/salaCocina.jpg',
         name: 'Sala y Cocina',
-        caption: 'Sala y Cocina',
-        links: [
-          { nodeId: 'cocina', position: { yaw: 2.5, pitch: 0.1 } },
-          { nodeId: 'recamara', position: { yaw: 4.8, pitch: -0.05 } },
-        ],
+        links: [],
       },
       {
-        id: 'salaCocina',
-        panorama: 'photos/salaCocina.jpg',
-        name: 'Sala y Cocina',
-        caption: 'Sala y Cocina',
-        links: [
-          { nodeId: 'cocina', position: { yaw: 2.5, pitch: 0.1 } },
-          { nodeId: 'recamara', position: { yaw: 4.8, pitch: -0.05 } },
-        ],
+        id: 'sala',
+        panorama: 'photos/sala.jpg',
+        name: 'Sala',
+        links: [],
       },
       {
-        id: 'cocina',
-        panorama: 'photos/cocina.jpg',
-        name: 'Cocina',
-        caption: 'Cocina',
-        links: [
-          { nodeId: 'sala', position: { yaw: 0.8, pitch: 0.0 } },
-        ],
+        id: 'entrada',
+        panorama: 'photos/entradaApto.jpg',
+        name: 'Entrada',
+        links: [],
       },
       {
-        id: 'recamara',
-        panorama: 'photos/recamara.jpg',
-        name: 'Recámara',
-        caption: 'Recámara principal',
-        links: [
-          { nodeId: 'sala', position: { yaw: 1.2, pitch: 0.0 } },
-        ],
+        id: 'pasillo1',
+        panorama: 'photos/pasilloUno.jpg',
+        name: 'Pasillo 1',
+        links: [],
+      },
+      {
+        id: 'pasillo2',
+        panorama: 'photos/pasilloDos.jpg',
+        name: 'Pasillo 2',
+        links: [],
+      },
+      {
+        id: 'pasillo3',
+        panorama: 'photos/pasilloTres.jpg',
+        name: 'Pasillo 3',
+        links: [],
+      },
+      {
+        id: 'habitacion1',
+        panorama: 'photos/habitacionUno.jpg',
+        name: 'Habitación 1',
+        links: [],
+      },
+      {
+        id: 'habitacion3',
+        panorama: 'photos/habitacionTres.jpg',
+        name: 'Habitación 3',
+        links: [],
+      },
+      {
+        id: 'banioPrivado',
+        panorama: 'photos/banioPrivado.jpg',
+        name: 'Baño Privado',
+        links: [],
+      },
+      {
+        id: 'banioSocial',
+        panorama: 'photos/banioSocial.jpg',
+        name: 'Baño Social',
+        links: [],
+      },
+      {
+        id: 'cuartoAseo',
+        panorama: 'photos/cuartoAseo.jpg',
+        name: 'Cuarto de Aseo',
+        links: [],
+      },
+      {
+        id: 'balcon',
+        panorama: 'photos/balcoon.jpg',
+        name: 'Balcón',
+        links: [],
+      },
+      {
+        id: 'walking',
+        panorama: 'photos/walkingClose.jpg',
+        name: 'Walking Close',
+        links: [],
       },
     ];
 
     const viewer = new Viewer({
-      container,
-      panorama: 'photos/sala.jpg',
-      caption: 'Sala',
+      container: containerRef.current,
+      panorama: defaultNodes[0].panorama,
+      caption: defaultNodes[0].name,
       defaultZoomLvl: 50,
       navbar: ['zoom', 'move', 'download', 'fullscreen'],
-      ...viewerOptions,
       plugins: [
         [VirtualTourPlugin, {
           positionMode: 'manual',
           renderMode: '3d',
-          startNodeId: startNodeId || 'sala',
+          startNodeId: defaultNodes[0].id,
           preload: true,
           showLinkTooltip: true,
           transitionOptions: {
@@ -81,7 +119,7 @@ const VirtualTour = forwardRef(function VirtualTour({ nodes, startNodeId, ...vie
             effect: 'fade',
             rotation: true,
           },
-          nodes: nodes || defaultNodes,
+          nodes: defaultNodes,
         }],
       ],
     });
@@ -92,7 +130,7 @@ const VirtualTour = forwardRef(function VirtualTour({ nodes, startNodeId, ...vie
       viewer.destroy();
       viewerRef.current = null;
     };
-  }, [nodes, startNodeId, viewerOptions]);
+  }, []);
 
   return (
     <div
