@@ -23,7 +23,7 @@ arrowStyles.textContent = `
 `;
 document.head.appendChild(arrowStyles);
 
-const VirtualTour = forwardRef(function VirtualTour(_, ref) {
+const VirtualTour = forwardRef(function VirtualTour({ onNodeChange }, ref) {
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
 
@@ -56,9 +56,9 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         name: "Sala",
         links: [
           { nodeId: "balcon", position: { yaw: -0.8, pitch: 0 } },
-          { nodeId: "pasillo1", position: { yaw: 1, pitch: 0 } },
+          { nodeId: "pasillo1", position: { yaw: 1.4, pitch: 0 } },
           { nodeId: "salaCocina", position: { yaw: 2.2, pitch: 0 } },
-          { nodeId: "entrada", position: { yaw: 3.4, pitch: 0 } },
+          { nodeId: "entrada", position: { yaw: 2.8, pitch: 0 } },
         ],
       },
       {
@@ -85,10 +85,11 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         panorama: "photos/pasilloDos.jpg",
         name: "Pasillo 2",
         links: [
-          { nodeId: "pasillo1", position: { yaw: 0.65, pitch: 0 } },
-          { nodeId: "habitacion1", position: { yaw: 1.18, pitch: 0 } },
-          { nodeId: "banioSocial", position: { yaw: -1, pitch: 0 } },
-          { nodeId: "habitacion3", position: { yaw: -2.5, pitch: 0 } },
+          { nodeId: "pasillo1", position: { yaw: -2.0, pitch: 0 } },
+          { nodeId: "habitacion1", position: { yaw: -1.5, pitch: 0 } },
+          { nodeId: "banioSocial", position: { yaw: 2.7, pitch: 0 } }, 
+          { nodeId: "habitacion3", position: { yaw: 1.18, pitch: 0 } },
+          { nodeId: "habitacion2", position: { yaw: -0.3, pitch: 0 } },
         ],
       },
       {
@@ -101,7 +102,13 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         id: "habitacion1",
         panorama: "photos/habitacionUno.jpg",
         name: "Habitación 1",
-        links: [{ nodeId: "pasillo1", position: { yaw: 3, pitch: 0 } }],
+        links: [{ nodeId: "pasillo1", position: { yaw: 1.6, pitch: 0 } }],
+      },
+      {
+        id: "habitacion2",
+        panorama: "photos/habitacionDos.jpg",
+        name: "Habitación 2",
+        links: [{ nodeId: "pasillo2", position: { yaw: -0.5, pitch: 0 } }],
       },
       {
         id: "habitacion3",
@@ -117,7 +124,7 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         id: "banioPrivado",
         panorama: "photos/banioPrivado.jpg",
         name: "Baño Privado",
-        links: [{ nodeId: "habitacion3", position: { yaw: 2, pitch: 0 } }],
+        links: [{ nodeId: "habitacion3", position: { yaw: 1.5, pitch: 0 } }],
       },
       {
         id: "banioSocial",
@@ -129,7 +136,7 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         id: "cuartoAseo",
         panorama: "photos/cuartoAseo.jpg",
         name: "Cuarto de Aseo",
-        links: [{ nodeId: "salaCocina", position: { yaw: 0, pitch: 0 } }],
+        links: [{ nodeId: "salaCocina", position: { yaw: -1.5, pitch: 0 } }],
       },
       {
         id: "balcon",
@@ -141,16 +148,16 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
         id: "walking",
         panorama: "photos/walkingClose.jpg",
         name: "Walking Close",
-        links: [{ nodeId: "habitacion3", position: { yaw: 2, pitch: 0 } }],
+        links: [{ nodeId: "habitacion3", position: { yaw: 1.0, pitch: 0 } }],
       },
     ];
 
     const viewer = new Viewer({
       container: containerRef.current,
       panorama: defaultNodes[0].panorama,
-      caption: defaultNodes[0].name,
-      defaultZoomLvl: 50,
-      navbar: ["zoom", "move", "download", "fullscreen", "caption"],
+      caption: "+57 310 805 6083",
+      defaultZoomLvl: 0,
+      navbar: ["zoom", "move", "caption", "fullscreen"],
       rendererParameters: {
         antialias: false,
         powerPreference: "high-performance",
@@ -174,7 +181,7 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
               effect: "fade",
               rotation: false,
             },
-            nodes: defaultNodes,
+            nodes: defaultNodes.map((node) => ({ ...node, caption: "+57 310 805 6083" })),
           },
         ],
       ],
@@ -183,8 +190,13 @@ const VirtualTour = forwardRef(function VirtualTour(_, ref) {
     viewerRef.current = viewer;
     window.__viewer = viewer;
 
+    const vtPlugin = viewer.getPlugin(VirtualTourPlugin);
+    const handleNodeChanged = (e) => onNodeChange?.(e.node.id);
+    vtPlugin.addEventListener("node-changed", handleNodeChanged);
+
     return () => {
       window.__viewer = null;
+      vtPlugin.removeEventListener("node-changed", handleNodeChanged);
       viewer.destroy();
       viewerRef.current = null;
     };

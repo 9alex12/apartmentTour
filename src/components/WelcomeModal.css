@@ -1,0 +1,152 @@
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Slab", Georgia, serif;
+  background: rgba(120, 125, 135, 0.3);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  animation: welcome-fade 0.6s ease both;
+}
+
+@keyframes welcome-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Nubes / bloques difuminados cálidos */
+.welcome-clouds {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 28px;
+  filter: blur(46px);
+  opacity: 0.7;
+  animation: cloud-float 14s ease-in-out infinite;
+}
+
+.cloud-1 {
+  width: 440px; height: 440px;
+  top: -130px; left: -90px;
+  background: radial-gradient(circle at 30% 30%, #d8dde4, #aab2bd 60%, transparent 75%);
+}
+
+.cloud-2 {
+  width: 380px; height: 380px;
+  bottom: -130px; right: -70px;
+  background: radial-gradient(circle at 70% 70%, #e4e8ee, #b9c0ca 60%, transparent 75%);
+  animation-delay: -4s;
+}
+
+.cloud-3 {
+  width: 320px; height: 320px;
+  top: 28%; right: 8%;
+  background: radial-gradient(circle at 50% 50%, #cdd3db, #9aa3af 60%, transparent 75%);
+  animation-delay: -8s;
+}
+
+.cloud-4 {
+  width: 360px; height: 360px;
+  bottom: 8%; left: 6%;
+  background: radial-gradient(circle at 40% 40%, #dde2e8, #b3bac4 60%, transparent 75%);
+  animation-delay: -11s;
+}
+
+@keyframes cloud-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(20px, -24px) scale(1.08); }
+}
+
+/* Tarjeta glass cálida */
+.welcome-card {
+  position: relative;
+  z-index: 1;
+  width: min(90vw, 460px);
+  padding: 44px 40px 36px;
+  text-align: center;
+  border-radius: 18px;
+  background: rgba(238, 240, 243, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 22px 60px rgba(60, 70, 85, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: card-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes card-pop {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.welcome-aura {
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #9aa3af, #c6ccd4, #7e8794, #b3bac4);
+  background-size: 300% 300%;
+  filter: blur(22px);
+  opacity: 0.6;
+  z-index: -1;
+  animation: aura-shift 10s ease infinite;
+}
+
+@keyframes aura-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.welcome-title {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: linear-gradient(120deg, #4a5159, #6b7280);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.welcome-text {
+  margin: 0 0 28px;
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 400;
+  color: #3a3f47;
+}
+
+.welcome-btn {
+  font-family: "Roboto Slab", Georgia, serif;
+  border: none;
+  cursor: pointer;
+  padding: 13px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  border-radius: 8px;
+  background: linear-gradient(120deg, #b5482f, #d9774f);
+  box-shadow: 0 10px 24px rgba(140, 60, 30, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.welcome-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(140, 60, 30, 0.55);
+}
+
+.welcome-btn:active {
+  transform: translateY(0);
+}
