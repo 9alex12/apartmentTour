@@ -154,7 +154,6 @@ const VirtualTour = forwardRef(function VirtualTour({ onNodeChange }, ref) {
 
     const viewer = new Viewer({
       container: containerRef.current,
-      panorama: defaultNodes[0].panorama,
       caption: "+57 310 805 6083",
       defaultZoomLvl: 0,
       navbar: ["zoom", "move", "caption", "fullscreen"],
